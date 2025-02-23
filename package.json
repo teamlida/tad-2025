@@ -1,0 +1,22 @@
+{
+  "name": "tad-2025",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamlida/tad-2025.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teamlida/tad-2025/issues"
+  },
+  "homepage": "https://github.com/teamlida/tad-2025#readme",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "playwright": "^1.50.1"
+  }
+}
