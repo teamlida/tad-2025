@@ -35,7 +35,7 @@ Alternatively, you can run the UI tool for Playwright: `npx playwright test --ui
 
 5. Use `Ctrl + d` or `/bye` to exit.
 
-6. To call ollama over API, run `ollama pull llama3.2` and then your curl: 
+6. To call LLM over API, run `ollama pull llama3.2` and then your curl: 
 ```bash
 curl http://localhost:11434/api/generate -d '{
   "model": "llama3.2",
