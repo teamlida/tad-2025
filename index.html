@@ -73,7 +73,7 @@
     <script>
         document.getElementById('order-coffee').addEventListener('click', function() {
             const coffeeType = document.getElementById('coffee-type').value;
-            const url = `https://tad-2025.free.beeceptor.com/create-order?type=${encodeURIComponent(coffeeType)}`;
+            const url = `https://tad-2025.proxy.beeceptor.com/create-order?type=${encodeURIComponent(coffeeType)}`;
             
             fetch(url, {
                 method: 'POST',
@@ -108,7 +108,7 @@
         });
 
         document.getElementById('check-status').addEventListener('click', function() {
-            fetch('https://tad-2025.free.beeceptor.com/check-status')
+            fetch('https://tad-2025.proxy.beeceptor.com/check-status')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
