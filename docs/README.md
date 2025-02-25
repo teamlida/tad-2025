@@ -1,7 +1,7 @@
 # Create Playwright project
 
 1. Open VS Code, create new folder
-2. run `nmp init playwright`
+2. run `npm init playwright`
 
 If you face an error
 ![error with registry](image-1.png)
@@ -27,13 +27,13 @@ Alternatively, you can run the UI tool for Playwright: `npx playwright test --ui
 
 3. Follow the instructions
  - `install ollama`
- - run your first model - open terminal and run `ollama run llama3.2` 
+ - run your first model - open terminal and run `ollama run llama3.2` or `ollama run llama3.2:1b` (smaller model)
 
 4. Once installed, you will see the prompt to send a message to LLM
 ![ollama installed](image-3.png)
 ![ollama - what's the weather in rotterdam](image-4.png)
 
-5. Use `Ctrl + d` or `/bye` to exit.
+5. Use `/bye` to exit the chat with LLM.
 
 6. To call LLM over API, run `ollama pull llama3.2` and then your curl: 
 ```bash
