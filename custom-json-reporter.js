@@ -28,13 +28,10 @@ class CustomJsonReporter {
             passed: result.status === 'passed',
         };
 
-        //if the test did not pass (if it failed, or timedOut or interrupted), add the failure reason
-        if (result.status !== 'passed' ) {
+        if (result.status === 'failed' ) {
             const errorMessage = result.error.message;
-            const testLogs = `${result.stdout || ''}\n${result.stderr || ''}`;
-
-            // fetch AI-generated fail reason here
-            testEntry.failureReason = result.error ? result.error.message.substring(0, 1000) : `Test ${result.status}`;
+            
+            testEntry.failureReason = result.error.message;
         }
 
         if (existingTestIndex !== -1) {
