@@ -27,11 +27,6 @@ class CustomJsonReporter {
             passed: result.status === 'passed',
         };
 
-        // if test failed, add failureReason to the report
-        if (result.status === 'failed' ) {            
-            testEntry.failureReason = result.error.message;
-        }
-
         if (existingTestIndex !== -1) {
             this.results[existingTestIndex] = testEntry;
         } else {
@@ -40,7 +35,6 @@ class CustomJsonReporter {
     }
 
     async onEnd(result) {
-        await Promise.all(this.promises);
         const endTime = Date.now();
         const totalDuration = endTime - this.startTime;
 
