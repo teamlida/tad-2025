@@ -7,6 +7,7 @@ class CustomJsonReporter {
         this.outputFile = options.outputFile || './playwright-report/custom-json-report.json';
         this.results = [];
         this.testType = '';
+        this.promises = [];
     }
 
     onBegin(config, suite) {
@@ -31,26 +32,30 @@ class CustomJsonReporter {
 
         if (result.status === 'failed') {
             testEntry.failureReason = result.error.message;
-            const apiContext = await request.newContext();
-        
-          const response = await apiContext.post('http://localhost:11434/api/generate', {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            data: {
-              model: "llama3.2",
-              prompt: "Summarize the error message to a short and human readable form: " + testEntry.failureReason,
-              stream: false
-            }
-          });
-        
-          const responseBody = await response.json();
-          console.log(responseBody);
-        
+
+            const apiPromise = request.newContext().then(async apiContext => {
+                return apiContext.post('http://localhost:11434/api/generate', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    data: {
+                        model: "llama3.2",
+                        prompt: "Summarize the error message to a short and human readable form: " + testEntry.failureReason,
+                        stream: false
+                    } 
+                });
+            }).then(async response => {
+            return response.json();
+        }).then(responseBody => {       
+            console.log("LLM RESPONSE:", responseBody);
             testEntry.failureReason = responseBody.response;
+        }).catch(error => {
+            console.error(error);
+        }); 
+
+            this.promises.push(apiPromise);
         }
 
-        
 
         if (existingTestIndex !== -1) {
             this.results[existingTestIndex] = testEntry;
@@ -60,6 +65,8 @@ class CustomJsonReporter {
     }
 
     async onEnd(result) {
+        await Promise.all(this.promises);
+
         const endTime = Date.now();
         const totalDuration = endTime - this.startTime;
 
