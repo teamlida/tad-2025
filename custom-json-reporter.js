@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { request } = require('@playwright/test');
 
 
 class CustomJsonReporter {
@@ -17,7 +18,7 @@ class CustomJsonReporter {
         let suiteName = test.parent.title;
     }
 
-    onTestEnd(test, result) {
+    async onTestEnd(test, result) {
         console.info(`[${test.title}] TEST ${result.status.toUpperCase()} ${result.error ? `:${result.error.message}` : ''}`);
 
         const existingTestIndex = this.results.findIndex(t => t.name === test.title);
@@ -25,7 +26,31 @@ class CustomJsonReporter {
         const testEntry = {
             name: test.title,
             passed: result.status === 'passed',
+            failureReason: null
         };
+
+        if (result.status === 'failed') {
+            testEntry.failureReason = result.error.message;
+            const apiContext = await request.newContext();
+        
+          const response = await apiContext.post('http://localhost:11434/api/generate', {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: {
+              model: "llama3.2",
+              prompt: "Summarize the error message to a short and human readable form: " + testEntry.failureReason,
+              stream: false
+            }
+          });
+        
+          const responseBody = await response.json();
+          console.log(responseBody);
+        
+            testEntry.failureReason = responseBody.response;
+        }
+
+        
 
         if (existingTestIndex !== -1) {
             this.results[existingTestIndex] = testEntry;

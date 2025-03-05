@@ -15,7 +15,10 @@ module.exports = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    ['./custom-json-reporter', { outputFile: './playwright-report/custom-report.json' }]
+  ], 
   use: {
     trace: 'on-first-retry',
   },
